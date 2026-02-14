@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Ankita</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+padding:0;
+background:#000;
+color:white;
+text-align:center;
+font-family:'Playfair Display',serif;
+overflow:hidden;
+}
+
+/* LOCK */
+#lockScreen{
+position:fixed;
+width:100%;
+height:100%;
+background:#000;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+input{
+padding:10px 20px;
+border-radius:20px;
+border:none;
+margin-top:10px;
+}
+
+button{
+padding:10px 25px;
+border-radius:20px;
+border:none;
+margin-top:20px;
+cursor:pointer;
+}
+
+/* NAME */
+h1{
+font-family:'Dancing Script',cursive;
+font-size:90px;
+margin-top:30px;
+display:none;
+color:#ff4da6;
+}
+
+/* GLASS QUOTE */
+.quote{
+margin:20px auto;
+padding:20px;
+width:80%;
+max-width:600px;
+border-radius:25px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.4);
+box-shadow:0 0 30px rgba(255,255,255,0.15);
+font-size:20px;
+}
+
+/* NOTE BEFORE FINAL */
+#noteMessage{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+width:80%;
+max-width:600px;
+padding:30px;
+border-radius:25px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(20px);
+border:1px solid rgba(255,255,255,0.4);
+font-size:22px;
+}
+
+/* FINAL MESSAGE */
+#finalMessage{
+display:none;
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-family:'Dancing Script',cursive;
+font-size:80px;
+color:#ff4da6;
+}
+
+/* MEDIA */
+img, video{
+width:80%;
+max-width:500px;
+border-radius:20px;
+box-shadow:0 15px 40px rgba(0,0,0,0.8);
+}
+
+/* ANU BLAST */
+.anu{
+position:fixed;
+font-family:'Dancing Script',cursive;
+font-size:16px;
+color:white;
+animation:blast 1.2s ease-out forwards;
+pointer-events:none;
+}
+@keyframes blast{
+0%{opacity:1; transform:scale(1);}
+100%{opacity:0; transform:translateY(-80px) scale(1.8);}
+}
+
+/* STARS */
+.star{
+position:fixed;
+top:-10px;
+width:2px;
+height:2px;
+background:white;
+animation:fall linear infinite;
+z-index:-1;
+}
+@keyframes fall{
+0%{transform:translateY(0);}
+100%{transform:translateY(110vh);}
+}
+</style>
+</head>
+
+<body>
+
+<div id="lockScreen">
+<h2 style="font-family:'Dancing Script',cursive;font-size:40px;">For Ankita Only 👑</h2>
+<input type="password" id="password">
+<button onclick="unlock()">Enter</button>
+</div>
+
+<h1 id="name">Ankita</h1>
+
+<div id="mediaSection" style="display:none;">
+<div id="mediaContainer"></div>
+<div id="quoteText" class="quote"></div>
+<button onclick="nextMedia()">Next</button>
+</div>
+
+<!-- NOTE -->
+<div id="noteMessage">
+I just want you to know…  
+being with you makes me genuinely happy.  
+You’ve added something to my life  
+that I didn’t even know was missing.  
+And I’m grateful for you every single day. 🤍
+</div>
+
+<!-- FINAL -->
+<div id="finalMessage">
+Happy Valentine Anu ❤️
+</div>
+
+<script>
+
+let photos = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg"];
+let videos = ["snap1.mp4","snap2.mp4","snap3.mp4","snap4.mp4","snap5.mp4"];
+
+let photoQuotes = [
+"That smile started something in me.",
+"You shine without even trying.",
+"This memory still feels warm.",
+"You are effortlessly beautiful.",
+"My favorite view will always be you."
+];
+
+let videoQuotes = [
+"Your laugh? My weakness.",
+"This moment lives in my heart.",
+"I could replay this forever.",
+"You make ordinary seconds special.",
+"And after everything… I still choose you."
+];
+
+let index = 0;
+let phase = "photo";
+
+function unlock(){
+if(document.getElementById("password").value.toLowerCase()==="malkin"){
+document.getElementById("lockScreen").style.display="none";
+document.getElementById("name").style.display="block";
+document.getElementById("mediaSection").style.display="block";
+loadPhoto();
+}else{
+alert("Wrong secret 😌");
+}
+}
+
+function loadPhoto(){
+document.getElementById("mediaContainer").innerHTML =
+"<img src='"+photos[index]+"'>";
+document.getElementById("quoteText").innerText = photoQuotes[index];
+}
+
+function loadVideo(){
+document.getElementById("mediaContainer").innerHTML =
+"<video id='currentVideo' controls><source src='"+videos[index]+"' type='video/mp4'></video>";
+document.getElementById("quoteText").innerText = videoQuotes[index];
+
+let video = document.getElementById("currentVideo");
+video.onended = function(){
+nextMedia();
+};
+}
+
+function nextMedia(){
+
+anuBlast();
+
+setTimeout(()=>{
+
+if(phase === "photo"){
+index++;
+if(index < photos.length){
+loadPhoto();
+}else{
+phase = "video";
+index = 0;
+loadVideo();
+}
+}
+else{
+index++;
+if(index < videos.length){
+loadVideo();
+}else{
+showNote();
+}
+}
+
+},600);
+}
+
+function showNote(){
+document.getElementById("mediaSection").style.display="none";
+document.getElementById("name").style.display="none";
+document.getElementById("noteMessage").style.display="block";
+
+setTimeout(()=>{
+document.getElementById("noteMessage").style.display="none";
+document.getElementById("finalMessage").style.display="block";
+},5000);
+}
+
+function anuBlast(){
+for(let i=0;i<100;i++){
+let span=document.createElement("div");
+span.className="anu";
+span.innerText="Anu";
+span.style.left=Math.random()*100+"vw";
+span.style.top=Math.random()*100+"vh";
+document.body.appendChild(span);
+setTimeout(()=>{span.remove();},1200);
+}
+}
+
+/* STARS */
+setInterval(function(){
+var star=document.createElement("div");
+star.className="star";
+star.style.left=Math.random()*100+"vw";
+star.style.animationDuration=(Math.random()*2+1)+"s";
+document.body.appendChild(star);
+setTimeout(function(){star.remove();},3000);
+},100);
+
+</script>
+
+</body>
+</html>
