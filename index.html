@@ -53,8 +53,8 @@ display:none;
 color:#ff4da6;
 }
 
-/* GLASS QUOTE */
-.quote{
+/* GLASS */
+.quote, #noteMessage{
 margin:20px auto;
 padding:20px;
 width:80%;
@@ -67,33 +67,38 @@ box-shadow:0 0 30px rgba(255,255,255,0.15);
 font-size:20px;
 }
 
-/* NOTE BEFORE FINAL */
-#noteMessage{
-display:none;
-position:fixed;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-width:80%;
-max-width:600px;
-padding:30px;
-border-radius:25px;
-background:rgba(255,255,255,0.05);
-backdrop-filter:blur(20px);
-border:1px solid rgba(255,255,255,0.4);
-font-size:22px;
+/* HEART */
+.heart{
+font-size:60px;
+color:#ff4da6;
+animation:beat 1s infinite;
+margin-top:20px;
 }
 
-/* FINAL MESSAGE */
+@keyframes beat{
+0%{transform:scale(1);}
+25%{transform:scale(1.2);}
+50%{transform:scale(1);}
+75%{transform:scale(1.2);}
+100%{transform:scale(1);}
+}
+
+/* FINAL */
 #finalMessage{
 display:none;
 position:fixed;
 top:50%;
 left:50%;
-transform:translate(-50%,-50%);
+transform:translate(-50%,-50%) scale(0.5);
 font-family:'Dancing Script',cursive;
 font-size:80px;
 color:#ff4da6;
+transition:all 1.5s ease;
+}
+
+#finalMessage.show{
+transform:translate(-50%,-50%) scale(1);
+text-shadow:0 0 40px #ff4da6;
 }
 
 /* MEDIA */
@@ -104,7 +109,7 @@ border-radius:20px;
 box-shadow:0 15px 40px rgba(0,0,0,0.8);
 }
 
-/* ANU BLAST */
+/* ANKITA BLAST */
 .anu{
 position:fixed;
 font-family:'Dancing Script',cursive;
@@ -151,24 +156,26 @@ z-index:-1;
 <button onclick="nextMedia()">Next</button>
 </div>
 
-<!-- NOTE -->
-<div id="noteMessage">
+<div id="noteMessage" style="display:none;">
 I just want you to know…  
 being with you makes me genuinely happy.  
 You’ve added something to my life  
 that I didn’t even know was missing.  
 And I’m grateful for you every single day. 🤍
+
+<div class="heart">❤️</div>
+
+<button onclick="showFinal()">Next</button>
 </div>
 
-<!-- FINAL -->
 <div id="finalMessage">
-Happy Valentine Anu ❤️
+Happy Valentine Ankita ❤️
 </div>
 
 <script>
 
-let photos = ["photo1.jpg","photo2.jpg","photo3.jpg","photo4.jpg","photo5.jpg"];
-let videos = ["snap1.mp4","snap2.mp4","snap3.mp4","snap4.mp4","snap5.mp4"];
+let photos = ["Photo1.jpg","Photo2.jpg","Photo3.jpg","Photo4.jpg","Photo5.jpg"];
+let videos = ["Snap1.mp4","Snap2.mp4","Snap3.mp4","Snap4.mp4","Snap5.mp4"];
 
 let photoQuotes = [
 "That smile started something in me.",
@@ -218,11 +225,9 @@ nextMedia();
 }
 
 function nextMedia(){
-
-anuBlast();
+ankitaBlast();
 
 setTimeout(()=>{
-
 if(phase === "photo"){
 index++;
 if(index < photos.length){
@@ -241,7 +246,6 @@ loadVideo();
 showNote();
 }
 }
-
 },600);
 }
 
@@ -249,18 +253,22 @@ function showNote(){
 document.getElementById("mediaSection").style.display="none";
 document.getElementById("name").style.display="none";
 document.getElementById("noteMessage").style.display="block";
-
-setTimeout(()=>{
-document.getElementById("noteMessage").style.display="none";
-document.getElementById("finalMessage").style.display="block";
-},5000);
 }
 
-function anuBlast(){
+function showFinal(){
+document.getElementById("noteMessage").style.display="none";
+let final = document.getElementById("finalMessage");
+final.style.display="block";
+setTimeout(()=>{
+final.classList.add("show");
+},100);
+}
+
+function ankitaBlast(){
 for(let i=0;i<100;i++){
 let span=document.createElement("div");
 span.className="anu";
-span.innerText="Anu";
+span.innerText="Ankita";
 span.style.left=Math.random()*100+"vw";
 span.style.top=Math.random()*100+"vh";
 document.body.appendChild(span);
@@ -275,7 +283,7 @@ star.className="star";
 star.style.left=Math.random()*100+"vw";
 star.style.animationDuration=(Math.random()*2+1)+"s";
 document.body.appendChild(star);
-setTimeout(function(){star.remove();},3000);
+setTimeout(()=>{star.remove();},3000);
 },100);
 
 </script>
